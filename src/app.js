@@ -5,12 +5,12 @@ var request = require('request');
 //Constants and Global Variables
 const port = process.env.PORT || 3000;
 const anghamiToken = process.env.TOKEN;
-var app = express();
-var headers = { 
+const headers = { 
    'Content-Type':'application/json',
    'XAT':'interns',
    'XATH':anghamiToken
 };
+var app = express();
 
 
 
