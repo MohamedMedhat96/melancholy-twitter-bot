@@ -2,6 +2,7 @@
 const express = require('express');
 const request = require('request');
 const getArtist = require('../utils/getArtist.js')
+const indexService = require('../utils/indexService.js');
 
 //Constants and Global Variables
 const port = process.env.PORT || 3000;
@@ -12,9 +13,6 @@ const headers = {
    'XAT': 'interns',
    'XATH': anghamiToken
 };
-
-
-
 
 
 
