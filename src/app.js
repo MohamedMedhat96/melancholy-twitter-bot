@@ -7,8 +7,10 @@ const anghamiToken = process.env.TOKEN;
 var app = express();
 
 
-app.get('/', function (req, res) {
-    res.send(anghamiToken);
+app.get('/getSongByArtist', function (req, res) {
+    var songId = req.query.songId;
+    var artistId = req.query.artistId;
+    res.send(songId + " "+ artistId);
  })
  
 
