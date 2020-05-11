@@ -8,7 +8,7 @@ const getIndex = (callback) => {
 
     request(url, (error, res, body) => {
         if (error) {
-            return callback(err, undefined);
+            return callback(error, undefined);
         } else {
             callback(undefined, body);
         }

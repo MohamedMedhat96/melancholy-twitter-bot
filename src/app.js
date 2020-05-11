@@ -38,7 +38,7 @@ app.get('/getSongByArtist', function (req, res) {
          });
       }
       else
-         return res.send(err);
+         return res.send(localerr);
 
    })
 

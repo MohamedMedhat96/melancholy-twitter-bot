@@ -17,7 +17,7 @@ const getArtist = (artistName, callback) => {
          return callback(err, undefined);
       }
       if (response.statusCode != 200)
-         return callback("200", undefined);
+         return callback(response.statusCode, undefined);
       else {
          let outPut = JSON.parse(body);
          callback(undefined, { 'artist': outPut.results[0].name, 'id': outPut.results[0].id });
