@@ -50,6 +50,34 @@ app.get('/getSongByArtist', function (req, res) {
 
 })
 
+app.get('/latestSong', function (req, res) {
+   var url = "https://bus.anghami.com/public/playlist/data";
+   var output;
+   
+    indexService.getIndex((err,index)=>{
+      var propertiesObject = { 'playlist_id': 175485967}
+      console.log(index);
+      request({ headers: headers, url: url, qs: propertiesObject }, function (err, response, body) {
+         if (err) { console.log(err); return; }
+         console.log("Get response: " + response.statusCode);
+         outPut = JSON.parse(body);
+         if (outPut.data[index] != undefined){
+            indexService.updateIndex((JSON.parse(index) + 1).toString(), (updateErr,updateRes)=>{
+               if(updateErr==undefined)
+               console.log(updateErr);
+               else
+               console.log(updateRes);
+            })
+            res.send({ 'title': outPut.data[index].title, 'artist': outPut.data[index].artist, url: 'https://play.anghami.com/song/' + outPut.data[index].id });
+         }else
+            res.send("No song has been posted yet");
+      });
+      
+
+   });
+   
+   
+})
 
 app.listen(port, function () {
    console.log("A7zanBot is listening on port:%s", port);
