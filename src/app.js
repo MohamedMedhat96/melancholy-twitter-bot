@@ -19,6 +19,9 @@ const headers = {
 app.get('/getSongByArtist', function (req, res) {
    var songQuery = req.query.query;
    var artistName = req.query.artistName;
+   if(songQuery==undefined || artistName==undefined)
+   return res.sendStatus(400).statusMessage("You need to send the song queyr and the artist name");
+   
    var url = "https://bus.anghami.com/public/search";
    var outPut;
    getArtist(artistName, (localerr, localres) => {

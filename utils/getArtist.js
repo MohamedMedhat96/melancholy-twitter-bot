@@ -20,7 +20,10 @@ const getArtist = (artistName, callback) => {
          return callback(response.statusCode, undefined);
       else {
          let outPut = JSON.parse(body);
+         if(outPut.results[0] != undefined)
          callback(undefined, { 'artist': outPut.results[0].name, 'id': outPut.results[0].id });
+         else
+         callback("User not found",undefined);
       }
    });
 
