@@ -31,7 +31,7 @@ app.get('/getSongByArtist', function (req, res) {
             if (err) { console.log(err); return; }
             console.log("Get response: " + response.statusCode);
             outPut = JSON.parse(body);
-            if (outPut.results != undefined)
+            if (outPut.results[0] != undefined)
                return res.send({ 'title': outPut.results[0].title, 'artist': outPut.results[0].artist, url: 'https://play.anghami.com/song/' + outPut.results[0].id });
             else
                res.send("This song was not found");
