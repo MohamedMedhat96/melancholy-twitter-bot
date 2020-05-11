@@ -50,6 +50,17 @@ app.get('/getSongByArtist', function (req, res) {
 
 })
 
+app.post('/setIndex', function (req, res) {
+   var indexValue = req.query.index;
+
+   indexService.updateIndex(indexValue, (err, index) => {
+      if (err)
+         return res.status(500).send("An internal server error has occured, index was not updated: " + updateErr);
+      else
+         return res.status(200).send("Index updated succesfully, Index:" + index);
+   })
+})
+
 app.post('/updateIndex', function (req, res) {
    indexService.getIndex((err, index) => {
       if (err == undefined) {
