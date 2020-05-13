@@ -20,7 +20,7 @@ app.get('/getSongByArtist', function (req, res) {
    var songQuery = req.query.query;
    var artistName = req.query.artistName;
    if (songQuery == undefined || artistName == undefined)
-      return res.sendStatus(400).statusMessage("You need to send the song queyr and the artist name");
+      return res.status(400).send("You need to send the song queyr and the artist name");
 
    var url = "https://bus.anghami.com/public/search";
    var outPut;
