@@ -3,10 +3,12 @@ const express = require('express');
 const request = require('request');
 const getArtist = require('../utils/getArtist.js')
 const indexService = require('../utils/indexService.js');
+const bodyParser = require('body-parser')
 
 //Constants and Global Variables
 const port = process.env.PORT || 3000;
 const app = express();
+app.use(bodyParser.json());
 const anghamiToken = process.env.TOKEN;
 const headers = {
    'Content-Type': 'application/json',
