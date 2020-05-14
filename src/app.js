@@ -1,9 +1,10 @@
 //Imports
 const express = require('express');
 const request = require('request');
-const getArtist = require('../utils/getArtist.js')
+const anghamiService = require('../utils/anghamiService.js')
 const indexService = require('../utils/indexService.js');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const spotifyService = require('../utils/spotifyService');
 
 //Constants and Global Variables
 const port = process.env.PORT || 3000;
@@ -20,25 +21,13 @@ const headers = {
    'XATH': anghamiToken
 };
 
-const spotifyOptions = {
-   url: 'https://accounts.spotify.com/api/token',
-   headers: {
-     'Authorization': 'Basic ' + (Buffer.from(spotifyClientId + ':' + spotifyClientSecret).toString('base64'))
-   },
-   form: {
-     grant_type: 'client_credentials'
-   },
-   json: true
- };
- 
-   request.post(authOptions, function(error, response, body) {
-   if (!error && response.statusCode === 200) {
- 
-      spotifyToken = body.access_token;    
-      console.log(spotifyToken);
-   }
-   });
 
+spotifyService.spotifyLogin(spotifyClientId,spotifyClientSecret,(err,token)=>{
+if(err)
+spotifyToken = undefined;
+else
+spotifyToken = token;
+})
    
 
 app.get('/getSongByArtist', function (req, res) {
@@ -49,21 +38,15 @@ app.get('/getSongByArtist', function (req, res) {
 
    var url = "https://bus.anghami.com/public/search";
    var outPut;
-   getArtist(artistName, (localerr, localres) => {
+   anghamiService.getArtist(artistName, (localerr, localres) => {
 
       if (localerr == undefined) {
-         var propertiesObject = { 'query': songQuery, 'searchType': 'song', page: 0, artistid: localres.id }
-
-
-         request({ headers: headers, url: url, qs: propertiesObject }, function (err, response, body) {
-            if (err) { console.log(err); return; }
-            console.log("Get response: " + response.statusCode);
-            outPut = JSON.parse(body);
-            if (outPut.results[0] != undefined)
-               return res.send({ 'title': outPut.results[0].title, 'artist': outPut.results[0].artist, url: 'https://play.anghami.com/song/' + outPut.results[0].id });
+         anghamiService.getSongByArtist(localres.id,songQuery,(songErr,songRes)=>{
+            if(songErr)
+            return res.send(songErr);
             else
-               res.send("This song was not found");
-         });
+            return res.send(songRes);
+         })
       }
       else
          return res.send(localerr);
@@ -107,25 +90,12 @@ app.post('/updateIndex', function (req, res) {
 
 
 app.get('/latestSong', function (req, res) {
-   var url = "https://bus.anghami.com/public/playlist/data";
-   var output;
-
-   indexService.getIndex((err, index) => {
-      var propertiesObject = { 'playlist_id': 175485967 }
-      console.log(index);
-      request({ headers: headers, url: url, qs: propertiesObject }, function (err, response, body) {
-         if (err) { console.log(err); return; }
-         console.log("Get response: " + response.statusCode);
-         outPut = JSON.parse(body);
-         if (outPut.data[index] != undefined) {
-            res.send({ 'title': outPut.data[index].title, 'artist': outPut.data[index].artist, url: 'https://play.anghami.com/song/' + outPut.data[index].id });
-         } else
-            res.send("No song has been posted yet");
-      });
-
-
-   });
-
+  anghamiService.getLatestSong((err,body)=>{
+     if(err)
+     res.send(err);
+     else
+     res.send(body);
+  })
 
 })
 
