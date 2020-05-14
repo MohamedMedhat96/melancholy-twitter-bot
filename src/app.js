@@ -42,7 +42,6 @@ const spotifyOptions = {
    
 
 app.get('/getSongByArtist', function (req, res) {
-   console.log(spotifyToken);
    var songQuery = req.query.query;
    var artistName = req.query.artistName;
    if (songQuery == undefined || artistName == undefined)
