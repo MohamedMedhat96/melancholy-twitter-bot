@@ -10,15 +10,39 @@ const port = process.env.PORT || 3000;
 const app = express();
 app.use(bodyParser.json());
 const anghamiToken = process.env.TOKEN;
+const spotifyClientId = process.env.CLIENTID;
+const spotifyClientSecret=process.env.CLIENTSECRET;
+var spotifyToken;
+
 const headers = {
    'Content-Type': 'application/json',
    'XAT': 'interns',
    'XATH': anghamiToken
 };
 
+const spotifyOptions = {
+   url: 'https://accounts.spotify.com/api/token',
+   headers: {
+     'Authorization': 'Basic ' + (Buffer.from(spotifyClientId + ':' + spotifyClientSecret).toString('base64'))
+   },
+   form: {
+     grant_type: 'client_credentials'
+   },
+   json: true
+ };
+ 
+   request.post(authOptions, function(error, response, body) {
+   if (!error && response.statusCode === 200) {
+ 
+      spotifyToken = body.access_token;    
+      console.log(spotifyToken);
+   }
+   });
 
+   
 
 app.get('/getSongByArtist', function (req, res) {
+   console.log(spotifyToken);
    var songQuery = req.query.query;
    var artistName = req.query.artistName;
    if (songQuery == undefined || artistName == undefined)
