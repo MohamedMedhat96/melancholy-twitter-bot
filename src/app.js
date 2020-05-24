@@ -10,17 +10,31 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(bodyParser.json());
-const spotifyClientId = process.env.CLIENTID;
-const spotifyClientSecret = process.env.CLIENTSECRET;
+
 var spotifyToken;
 
+spotifyService.spotifyLogin((err,res)=>{
+   if(err)
+   console.log(err)
+   if(res)
+   console.log(res)
 
-spotifyService.spotifyLogin(spotifyClientId, spotifyClientSecret, (err, token) => {
-   if (err)
-      spotifyToken = undefined;
-   else
-      spotifyToken = token;
 })
+
+app.get('/getSongByArtistSpotify', function(req,res){
+   var songQuery = req.query.query;
+   var artistName = req.query.artistName;
+   if (songQuery == undefined || artistName == undefined)
+      return res.status(400).send("You need to send the song query and the artist name");
+   spotifyService.spotifyGetSong(artistName,songQuery,(err,response)=>{
+      if (err)
+      return res.status(500).send(err);
+      else
+      return res.send(response);
+    })
+})
+
+
 
 
 app.get('/getBuildStatus', function (req, res) {
@@ -40,7 +54,7 @@ app.post('/updateBuildStatus', function (req, res) {
       else{
          //console.log(response)
          return res.send(response);
-      }
+      }  
    })
 })
 
@@ -48,7 +62,7 @@ app.get('/getSongByArtist', function (req, res) {
    var songQuery = req.query.query;
    var artistName = req.query.artistName;
    if (songQuery == undefined || artistName == undefined)
-      return res.status(400).send("You need to send the song queyr and the artist name");
+      return res.status(400).send("You need to send the song query and the artist name");
 
    var url = "https://bus.anghami.com/public/search";
    var outPut;
@@ -102,6 +116,9 @@ app.post('/updateIndex', function (req, res) {
    })
 })
 
+app.get('/findBySongSpotify',function(req,res){
+spotifyService
+})
 
 app.get('/latestSong', function (req, res) {
    anghamiService.getLatestSong((err, body) => {
