@@ -14,16 +14,14 @@ app.use(bodyParser.json());
 var spotifyToken;
 
 spotifyService.spotifyLogin((err,res)=>{
-   if(err)
-   console.log(err)
-   if(res)
-   console.log(res)
-
+  
 })
 
 app.get('/getSongByArtistSpotify', function(req,res){
+   
    var songQuery = req.query.query;
    var artistName = req.query.artistName;
+   console.log(songQuery + ' ' + artistName)
    if (songQuery == undefined || artistName == undefined)
       return res.status(400).send("You need to send the song query and the artist name");
    spotifyService.spotifyGetSong(artistName,songQuery,(err,response)=>{
@@ -34,7 +32,16 @@ app.get('/getSongByArtistSpotify', function(req,res){
     })
 })
 
-
+app.post('/updateAPI',function(req,res){
+ 
+   spotifyService.spotifyLogin((error,update)=>{
+      console.log(update)
+      if(error)
+      res.status(500).send(error)
+      else
+      res.status(200).send()
+   })
+})
 
 
 app.get('/getBuildStatus', function (req, res) {
