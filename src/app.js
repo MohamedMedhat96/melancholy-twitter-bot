@@ -123,9 +123,7 @@ app.post('/updateIndex', function (req, res) {
    })
 })
 
-app.get('/findBySongSpotify',function(req,res){
-spotifyService
-})
+
 
 app.get('/latestSong', function (req, res) {
    anghamiService.getLatestSong((err, body) => {
