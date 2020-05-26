@@ -1,6 +1,6 @@
 //Imports
 const request = require('request')
-const indexService = require('./indexService')
+const firebaseService = require('./firebaseService')
 //Constants and Global Variables
 const anghamiToken = process.env.TOKEN;
 const headers = {
@@ -50,7 +50,7 @@ const getLatestSong = (callback) => {
    var url = "https://bus.anghami.com/public/playlist/data";
    var output;
 
-   indexService.getIndex((err, index) => {
+   firebaseService.getIndex((err, index) => {
       var propertiesObject = { 'playlist_id': 175485967 }
       if(err)
       callback(err,undefined);
