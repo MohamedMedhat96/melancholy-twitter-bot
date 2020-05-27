@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 var spotifyToken;
 
 spotifyService.spotifyLogin((err,res)=>{
-  console.log(res)
+
 })
 
 app.get('/getSongByArtistSpotify', function(req,res){
