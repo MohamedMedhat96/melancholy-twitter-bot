@@ -14,14 +14,13 @@ app.use(bodyParser.json());
 var spotifyToken;
 
 spotifyService.spotifyLogin((err,res)=>{
-  
+  console.log(res)
 })
 
 app.get('/getSongByArtistSpotify', function(req,res){
    
    var songQuery = req.query.query;
    var artistName = req.query.artistName;
-   console.log(songQuery + ' ' + artistName)
    if (songQuery == undefined || artistName == undefined)
       return res.status(400).send("You need to send the song query and the artist name");
    spotifyService.spotifyGetSong(artistName,songQuery,(err,response)=>{
