@@ -34,7 +34,7 @@ const spotifyGetSong = (artistName, songQuery, callback) => {
     },
     json: true
   };
-  spotifyOptions.url = spotifyOptions.url + '?q=artist:' + artistName.replace(" ", "%20") + '&track:' + songQuery.replace(" ", "%20") + '&type=track'
+  spotifyOptions.url = spotifyOptions.url + '?q=artist:' + artistName.replace(" ", "%20") + '%20track:' + songQuery.replace(" ", "%20") + '&type=track'
   request.get(spotifyOptions, function (error, response, body) {
     console.log(spotifyOptions.url)
     if (!error) {
@@ -46,7 +46,6 @@ const spotifyGetSong = (artistName, songQuery, callback) => {
         callback({error:"Song not found on spotify"}, undefined);
       }
     } else {
-      console.log(error)
       callback(error, undefined);
     }
   })
