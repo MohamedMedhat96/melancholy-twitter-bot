@@ -58,7 +58,12 @@ const getLatestSong = (callback) => {
          if (err) {
             return callback(err,undefined);
          }
+         try {
          output = JSON.parse(body);
+         }
+         catch(e){
+            console.log(body)
+         }
          if (output.data[index] != undefined) {
             callback(undefined,{ 'title': output.data[index].title, 'artist': output.data[index].artist, url: 'https://play.anghami.com/song/' + output.data[index].id });
          } else
