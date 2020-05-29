@@ -73,7 +73,7 @@ app.get('/getSongByArtist', function (req, res) {
    var url = "https://bus.anghami.com/public/search";
    var outPut;
    anghamiService.getArtist(artistName, (localerr, localres) => {
-
+     
       if (localerr == undefined) {
          anghamiService.getSongByArtist(localres.id, songQuery, (songErr, songRes) => {
             if (songErr)

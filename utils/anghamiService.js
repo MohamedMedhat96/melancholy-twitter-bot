@@ -21,7 +21,7 @@ const getArtist = (artistName, callback) => {
          return callback(response.statusCode, undefined);
       else {
          let outPut = JSON.parse(body);
-         if (outPut.results[0] != undefined)
+         if (outPut.results!= undefined && outPut.results[0] != undefined)
             callback(undefined, { 'artist': outPut.results[0].name, 'id': outPut.results[0].id });
          else
             callback("Artist not found", undefined);
@@ -39,8 +39,9 @@ const getSongByArtist=(artistid, songQuery, callback)=>{
         return callback(err,undefined);
        }
       outPut = JSON.parse(body);
-      if (output.results!= undefined && outPut.results[0] != undefined)
-         return callback(undefined,{ 'title': outPut.results[0].title, 'artist': outPut.results[0].artist, url: 'https://play.anghami.com/song/' + outPut.results[0].id });
+      console.log(outPut)
+      if (outPut.data!= undefined && outPut.data[0] != undefined)
+         return callback(undefined,{ 'title': outPut.data[0].title, 'artist': outPut.data[0].artist, url: 'https://play.anghami.com/song/' + outPut.data[0].id });
       else
          return callback("This song was not found",undefined);
    });
