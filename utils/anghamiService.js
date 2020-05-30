@@ -39,7 +39,7 @@ const getSongByArtist=(artistid, songQuery, callback)=>{
         return callback(err,undefined);
        }
       outPut = JSON.parse(body);
-      console.log(outPut)
+      //console.log(outPut)
       if (outPut.data!= undefined && outPut.data[0] != undefined)
          return callback(undefined,{ 'title': outPut.data[0].title, 'artist': outPut.data[0].artist, url: 'https://play.anghami.com/song/' + outPut.data[0].id });
       else
