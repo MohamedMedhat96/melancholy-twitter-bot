@@ -34,7 +34,6 @@ app.get('/getSongByArtistSpotify', function(req,res){
 app.post('/updateAPI',function(req,res){
  
    spotifyService.spotifyLogin((error,update)=>{
-      console.log(update)
       if(error)
       res.status(500).send(error)
       else

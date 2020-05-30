@@ -43,9 +43,11 @@ const spotifyGetSong = (artistName, songQuery, callback) => {
         console.log(response)
         callback(undefined, response)
       } else {
+        console.log(body)
         callback({error:"Song not found on spotify"}, undefined);
       }
     } else {
+      console.log(error)
       callback(error, undefined);
     }
   })
