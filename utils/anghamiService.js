@@ -21,8 +21,23 @@ const getArtist = (artistName, callback) => {
          return callback(response.statusCode, undefined);
       else {
          let outPut = JSON.parse(body);
-         if (outPut.results!= undefined && outPut.results[0] != undefined)
+         if (outPut.results!= undefined && outPut.results[0] != undefined){
+            var name = outPut.results[0].name
+            var id = outPut.results[0].id
+            for(let artist of outPut.results)
+            {
+               console.log(artist)
+               if(artist.name.toLowerCase() == artistName.toLowerCase())
+               {
+               
+                  name = artist.name
+                  id = artist.id 
+                  break
+               }
+            }
+            console.log(name)
             callback(undefined, { 'artist': outPut.results[0].name, 'id': outPut.results[0].id });
+         }
          else
             callback("Artist not found", undefined);
       }
