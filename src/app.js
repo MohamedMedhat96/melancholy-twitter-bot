@@ -75,8 +75,14 @@ app.get('/getSongByArtist', function (req, res) {
      
       if (localerr == undefined) {
          anghamiService.getSongByArtist(localres.id, songQuery, (songErr, songRes) => {
-            if (songErr)
-               return res.status(500).send(songErr);
+            if (songErr){
+            anghamiService.getSong(artistName,songQuery,(searchErr,searchRes)=>{
+                  if(searchErr)
+                  return res.status(500).send(searchErr);
+                  else
+                  return res.send(searchRes);
+               })
+            }
             else
                return res.send(songRes);
          })
