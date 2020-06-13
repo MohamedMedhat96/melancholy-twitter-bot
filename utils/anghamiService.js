@@ -21,21 +21,17 @@ const getArtist = (artistName, callback) => {
          return callback(response.statusCode, undefined);
       else {
          let outPut = JSON.parse(body);
-         if (outPut.results!= undefined && outPut.results[0] != undefined){
+         if (outPut.results != undefined && outPut.results[0] != undefined) {
             var name = outPut.results[0].name
             var id = outPut.results[0].id
-            for(let artist of outPut.results)
-            {
-               console.log(artist)
-               if(artist.name.toLowerCase() == artistName.toLowerCase())
-               {
-               
+            for (let artist of outPut.results) {
+               if (artist.name.toLowerCase() == artistName.toLowerCase()) {
+
                   name = artist.name
-                  id = artist.id 
+                  id = artist.id
                   break
                }
             }
-            console.log(name)
             callback(undefined, { 'artist': outPut.results[0].name, 'id': outPut.results[0].id });
          }
          else
@@ -45,35 +41,36 @@ const getArtist = (artistName, callback) => {
 
 }
 
-const getSongByArtist=(artistid, songQuery, callback)=>{
+const getSongByArtist = (artistid, songQuery, callback) => {
    var propertiesObject = { 'query': songQuery, 'searchType': 'song', page: 0, artistid: artistid }
    var url = "https://bus.anghami.com/public/search";
-   request({ headers:   headers, url: url, qs: propertiesObject }, function (err, response, body) {
-      if (err) { 
-        return callback(err,undefined);
-       }
+   request({ headers: headers, url: url, qs: propertiesObject }, function (err, response, body) {
+      if (err) {
+         return callback(err, undefined);
+      }
       outPut = JSON.parse(body);
-      if (outPut.data!= undefined && outPut.data[0] != undefined)
-         return callback(undefined,{ 'title': outPut.data[0].title, 'artist': outPut.data[0].artist, url: 'https://play.anghami.com/song/' + outPut.data[0].id });
+      if (outPut.data != undefined && outPut.data[0] != undefined)
+         return callback(undefined, { 'title': outPut.data[0].title, 'artist': outPut.data[0].artist, url: 'https://play.anghami.com/song/' + outPut.data[0].id });
       else
-         return callback("This song was not found",undefined);
+         return callback("This song was not found", undefined);
    });
 }
 
-const getSong = (artistName, songQuery, callback)=>{
-   var propertiesObject = { 'query': songQuery+'%20'+artistName, 'searchType': 'song', page: 0}
+const getSong = (artistName, songQuery, callback) => {
+   artistName = decodeURIComponent(artistName)
+   songQuery = decodeURIComponent(songQuery)
+   var propertiesObject = { 'query': songQuery + ' ' + artistName, 'searchType': 'song', page: 0 }
    var url = "https://bus.anghami.com/public/search";
-   request({ headers:   headers, url: url, qs: propertiesObject }, function (err, response, body) {
-      //console.log(response)
-      if (err) { 
-        return callback(err,undefined);
-       }
+   request({ headers: headers, url: url, qs: propertiesObject }, function (err, response, body) {
+      if (err) {
+         return callback(err, undefined);
+      }
       outPut = JSON.parse(body);
       console.log(outPut)
-      if (outPut.results!= undefined && outPut.results[0] != undefined)
-         return callback(undefined,{ 'title': outPut.results[0].title, 'artist': outPut.results[0].artist, url: 'https://play.anghami.com/song/' + outPut.results[0].id });
+      if (outPut.results != undefined && outPut.results[0] != undefined)
+         return callback(undefined, { 'title': outPut.results[0].title, 'artist': outPut.results[0].artist, url: 'https://play.anghami.com/song/' + outPut.results[0].id });
       else
-         return callback("This song was not found ",undefined);
+         return callback("This song was not found ", undefined);
    });
 }
 const getLatestSong = (callback) => {
@@ -82,23 +79,23 @@ const getLatestSong = (callback) => {
 
    firebaseService.getIndex((err, index) => {
       var propertiesObject = { 'playlist_id': 175485967 }
-      if(err)
-      callback(err,undefined);
+      if (err)
+         callback(err, undefined);
       request({ headers: headers, url: url, qs: propertiesObject }, function (err, response, body) {
          if (err) {
-            return callback(err,undefined);
+            return callback(err, undefined);
          }
          try {
-         output = JSON.parse(body);
+            output = JSON.parse(body);
          }
-         catch(e){
+         catch (e) {
             console.log(body)
             return callback("An error has occured", undefined);
          }
          if (output.data[index] != undefined) {
-            callback(undefined,{ 'title': output.data[index].title, 'artist': output.data[index].artist, url: 'https://play.anghami.com/song/' + output.data[index].id });
+            callback(undefined, { 'title': output.data[index].title, 'artist': output.data[index].artist, url: 'https://play.anghami.com/song/' + output.data[index].id });
          } else
-            callback("No song has been posted yet",undefined);
+            callback("No song has been posted yet", undefined);
       });
 
 
@@ -107,5 +104,5 @@ const getLatestSong = (callback) => {
 }
 module.exports =
 {
-   getArtist,getLatestSong,getSongByArtist,getSong
+   getArtist, getLatestSong, getSongByArtist, getSong
 };

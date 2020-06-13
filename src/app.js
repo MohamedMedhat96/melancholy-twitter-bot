@@ -13,31 +13,31 @@ app.use(bodyParser.json());
 
 var spotifyToken;
 
-spotifyService.spotifyLogin((err,res)=>{
+spotifyService.spotifyLogin((err, res) => {
 
 })
 
-app.get('/getSongByArtistSpotify', function(req,res){
-   
+app.get('/getSongByArtistSpotify', function (req, res) {
+
    var songQuery = req.query.query;
    var artistName = req.query.artistName;
    if (songQuery == undefined || artistName == undefined)
       return res.status(400).send("You need to send the song query and the artist name");
-   spotifyService.spotifyGetSong(artistName,songQuery,(err,response)=>{
+   spotifyService.spotifyGetSong(artistName, songQuery, (err, response) => {
       if (err)
-      return res.status(500).send(err);
+         return res.status(500).send(err);
       else
-      return res.send(response);
-    })
+         return res.send(response);
+   })
 })
 
-app.post('/updateAPI',function(req,res){
- 
-   spotifyService.spotifyLogin((error,update)=>{
-      if(error)
-      res.status(500).send(error)
+app.post('/updateAPI', function (req, res) {
+
+   spotifyService.spotifyLogin((error, update) => {
+      if (error)
+         res.status(500).send(error)
       else
-      res.status(200).send()
+         res.status(200).send()
    })
 })
 
@@ -56,10 +56,10 @@ app.post('/updateBuildStatus', function (req, res) {
    firebaseService.updateStatus(status, (err, response) => {
       if (err)
          return res.status(500).send(err);
-      else{
+      else {
          //console.log(response)
          return res.send(response);
-      }  
+      }
    })
 })
 
@@ -72,15 +72,15 @@ app.get('/getSongByArtist', function (req, res) {
    var url = "https://bus.anghami.com/public/search";
    var outPut;
    anghamiService.getArtist(artistName, (localerr, localres) => {
-     
+
       if (localerr == undefined) {
          anghamiService.getSongByArtist(localres.id, songQuery, (songErr, songRes) => {
-            if (songErr){
-            anghamiService.getSong(artistName,songQuery,(searchErr,searchRes)=>{
-                  if(searchErr)
-                  return res.status(500).send(searchErr);
+            if (songErr) {
+               anghamiService.getSong(artistName, songQuery, (searchErr, searchRes) => {
+                  if (searchErr)
+                     return res.status(500).send(searchErr);
                   else
-                  return res.send(searchRes);
+                     return res.send(searchRes);
                })
             }
             else
@@ -88,7 +88,13 @@ app.get('/getSongByArtist', function (req, res) {
          })
       }
       else
-         return res.status(500).send(localerr);
+         anghamiService.getSong(artistName, songQuery, (searchErr, searchRes) => {
+            if (searchErr)
+               return res.status(500).send(searchErr);
+            else
+               return res.send(searchRes);
+         })
+
 
    })
 
