@@ -8,6 +8,7 @@ const headers = {
    'XAT': 'interns',
    'XATH': anghamiToken
 };
+const accumulatorPlaylistID = 186329603;
 
 
 const getArtist = (artistName, callback) => {
@@ -102,7 +103,23 @@ const getLatestSong = (callback) => {
    });
 
 }
+const updateAccumulatorPlaylist = (( songQuery, callback) => {
+   songQuery = decodeURIComponent(songQuery)
+   var propertiesObject = { 'song_id': songQuery, 'playlist_id': accumulatorPlaylistID}
+   var url = "https://bus.anghami.com/public/playlist/add"
+   request({ headers: headers, url: url, qs: propertiesObject }, function (err, response, body) {
+      if (err) {
+         return callback(err, undefined);
+      }
+      if(response.statusCode!=200){
+         console.log("Error:" +response.statusCode+ response.statusMessage);
+      }
+      else {
+         console.log("song successfully added to playlist!");
+      }
+   });
+})
 module.exports =
 {
-   getArtist, getLatestSong, getSongByArtist, getSong
+   getArtist, getLatestSong, getSongByArtist, getSong, updateAccumulatorPlaylist
 };
