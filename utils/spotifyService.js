@@ -2,6 +2,7 @@
 const request = require('request');
 const spotifyClientId = process.env.CLIENTID;
 const spotifyClientSecret = process.env.CLIENTSECRET;
+const accumulatorPlaylistID = 186329603;
 var spotifyToken;
 const spotifyLogin = (callback) => {
   const spotifyOptions = {
@@ -53,6 +54,31 @@ const spotifyGetSong = (artistName, songQuery, callback) => {
   })
 }
 
+const spotifyUpdateAccumulatorPlaylist = (songURI, callback) => {
+  var spotifyOptions = {
+    url: 'https://api.spotify.com/v1/playlists/' + accumulatorPlaylistID + '/tracks',
+    headers: {
+      'Authorization': 'Bearer ' + spotifyToken,
+      'Content-Type': 'application/json'
+    },
+    json: true
+  };
+  spotifyOptions.url = spotifyOptions.url + '?uris=' + songURI;
+  request.post(spotifyOptions, function (error, response, body) {
+    console.log(spotifyOptions.url)
+    if (error) {
+      return callback(err, undefined);
+   }
+   if(response.statusCode!=200){
+      console.log("Error:" +response.statusCode+ response.statusMessage);
+   }
+   else {
+      console.log("song successfully added to spotify playlist!");
+   }
+  })
+
+}
+
 module.exports = {
-  spotifyLogin, spotifyGetSong
+  spotifyLogin, spotifyGetSong, spotifyUpdateAccumulatorPlaylist
 }

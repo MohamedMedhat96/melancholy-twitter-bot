@@ -115,7 +115,7 @@ const updateAccumulatorPlaylist = (( songQuery, callback) => {
          console.log("Error:" +response.statusCode+ response.statusMessage);
       }
       else {
-         console.log("song successfully added to playlist!");
+         console.log("song successfully added to anghami playlist!");
       }
    });
 })
