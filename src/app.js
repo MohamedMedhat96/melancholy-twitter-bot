@@ -145,6 +145,25 @@ app.get('/latestSong', function (req, res) {
 
 })
 
+app.get('/updateAccumulatorPlaylist', function (req, res) {
+      anghamiService.updateAccumulatorPlaylist( req.songID, (err, body) => {
+         if (err)
+         res.status(500).send(err);
+      else
+         res.send(body);
+      }
+      )
+      
+      spotifyService.spotifyUpdateAccumulatorPlaylist(req.songURI, (err, body) => {
+         if (err)
+         res.status(500).send(err);
+      else
+         res.send(body);
+      }
+      )
+})
+
+
 app.listen(port, function () {
    console.log("A7zanBot is listening on port:%s", port);
 })
