@@ -59,7 +59,7 @@ const spotifyGetSong = (artistName, songQuery, callback) => {
 }
 
 const spotifyUpdateAccumulatorPlaylist = (songURI, callback) => {
-    console.log(songURI)
+
     var spotifyOptions = {
         url: 'https://api.spotify.com/v1/playlists/' + accumulatorPlaylistID + '/tracks',
         headers: {
@@ -75,10 +75,10 @@ const spotifyUpdateAccumulatorPlaylist = (songURI, callback) => {
             return callback(err, undefined);
         }
         if (response.statusCode != 201) {
-            console.log(response)
-            console.log("Error:" + response.statusCode + response.statusMessage);
+            console.log("Error:" + response.statusCode + response.statusMessage)
+            return callback(err, undefined)
         } else {
-            console.log("song successfully added to spotify playlist!");
+            console.log("song successfully added to spotify playlist!")
             callback(undefined, "song added")
         }
     })
