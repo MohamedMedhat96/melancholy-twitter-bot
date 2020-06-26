@@ -141,7 +141,6 @@ app.get('/latestSong', function(req, res) {
 })
 
 app.get('/updateAccumulatorPlaylist', function(req, res) {
-    console.log(req.body)
     anghamiService.updateAccumulatorPlaylist(req.body.songID, (err, body) => {
 
         spotifyService.spotifyUpdateAccumulatorPlaylist(req.body.songURI, (err, body) => {
