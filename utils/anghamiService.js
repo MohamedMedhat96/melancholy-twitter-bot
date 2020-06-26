@@ -65,12 +65,15 @@ const getSong = (artistName, songQuery, callback) => {
         if (err) {
             return callback(err, undefined);
         }
+        try{
         outPut = JSON.parse(body);
         console.log(outPut)
         if (outPut.results != undefined && outPut.results[0] != undefined)
-            return callback(undefined, { 'title': outPut.results[0].title, 'artist': outPut.results[0].artist, url: 'https://play.anghami.com/song/' + outPut.results[0].id });
-        else
-            return callback("This song was not found ", undefined);
+            return callback(undefined, { 'title': outPut.results[0].title, 'artist': outPut.results[0].artist, url: 'https://play.anghami.com/song/' + outPut.results[0].id });            
+        }
+        catch(e){
+            return callback("This song was not found ", undefined); 
+        }
     });
 }
 const getLatestSong = (callback) => {
