@@ -44,7 +44,7 @@ const spotifyGetSong = (artistName, songQuery, callback) => {
         console.log(spotifyOptions.url)
         if (!error) {
             if (body != undefined && body.tracks != undefined && body.tracks.items[0] != undefined) {
-                var response = { songUrl: body.tracks.items[0].external_urls.spotify, artist: body.tracks.items[0].artists[0].name, title: body.tracks.items[0].name }
+                var response = { songUrl: body.tracks.items[0].external_urls.spotify, artist: body.tracks.items[0].artists[0].name, title: body.tracks.items[0].name, uri: body.tracks.items[0].uri }
                 console.log(response)
                 callback(undefined, response)
             } else {
