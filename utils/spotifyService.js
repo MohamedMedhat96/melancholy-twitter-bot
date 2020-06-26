@@ -72,11 +72,11 @@ const spotifyUpdateAccumulatorPlaylist = (songURI, callback) => {
     request.post(spotifyOptions, function(error, response, body) {
         console.log(spotifyOptions.url)
         if (error) {
-            return callback(err, undefined);
+            return callback(error, undefined);
         }
         if (response.statusCode != 201) {
             console.log("Error:" + response.statusCode + response.statusMessage)
-            return callback(err, undefined)
+            return callback(error, undefined)
         } else {
             console.log("song successfully added to spotify playlist!")
             callback(undefined, "song added")
